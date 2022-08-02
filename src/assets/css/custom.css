@@ -1,0 +1,9 @@
+.big-description {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.big-description:hover {
+    overflow: visible;
+    white-space: normal;
+}
