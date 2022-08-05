@@ -18,6 +18,7 @@ ReactDOM.render(
           <PrivateRoute path="/player" roles={['admin', 'player']} component={PlayerLayout} />
           <PrivateRoute path="/admin" roles={['admin']} component={AdminLayout} />
           <Route path="/auth" component={AuthLayout} />
+          <Redirect exact from="/" to='/auth/login' />
           <Redirect from="*" to='/sorry' />
         </Switch>
   </BrowserRouter>,

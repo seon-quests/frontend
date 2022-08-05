@@ -57,7 +57,6 @@ const AdminQuestStagesListTab = (props) => {
                                 <th scope="col">Почерговість</th>
                                 <th scope="col">Опис</th>
                                 <th scope="col">Відповідь</th>
-                                <th scope="col"/>
                             </tr>
                             </thead>
                             <tbody>
@@ -78,28 +77,6 @@ const AdminQuestStagesListTab = (props) => {
                                         <div className="d-flex align-items-center">
                                             <span className="mr-2">{questStage.answer}</span>
                                         </div>
-                                    </td>
-                                    <td className="text-right">
-                                        <UncontrolledDropdown>
-                                            <DropdownToggle
-                                                className="btn-icon-only text-light"
-                                                href="#pablo"
-                                                role="button"
-                                                size="sm"
-                                                color=""
-                                                onClick={(e) => e.preventDefault()}
-                                            >
-                                                <i className="fas fa-ellipsis-v"/>
-                                            </DropdownToggle>
-                                            <DropdownMenu className="dropdown-menu-arrow" right>
-                                                <DropdownItem
-                                                    href="#pablo"
-                                                    onClick={(e) => e.preventDefault()}
-                                                >
-                                                    Action
-                                                </DropdownItem>
-                                            </DropdownMenu>
-                                        </UncontrolledDropdown>
                                     </td>
                                 </tr>
                             ))}

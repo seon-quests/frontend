@@ -21,6 +21,14 @@ export const createQuest = async (data) => {
     }
 }
 
+export const changeQuestStatus = async (questId, questStatus) => {
+    try {
+        return await authorizedRequest.patch(`${apiUrl}/v1/quests/${questId}/`, {'status': questStatus});
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 export const registerTeamToQuest = async (questId, teamId) => {
     try {
         return await authorizedRequest.post(`${apiUrl}/v1/quests/${questId}/team-for-quest`, {'team_id': teamId});

@@ -17,11 +17,12 @@ import Header from "components/Headers/Header.js";
 import {getQuestStages} from "../../services/questStages";
 import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
-import {getQuest} from "../../services/quests";
+import {changeQuestStatus, getQuest} from "../../services/quests";
 import classnames from "classnames";
 import AdminQuestStagesListTab from "../../components/Tabs/AdminQuestStagesListTab";
 import AdminQuestTeamsTab from "../../components/Tabs/AdminQuestTeamsTab";
 import AdminQuestResultsTab from "../../components/Tabs/AdminQuestResultsTab";
+import {humanDateTime} from "../../services/dateTimeConfig";
 
 const AdminControlQuest = () => {
     const {id} = useParams();
@@ -32,6 +33,83 @@ const AdminControlQuest = () => {
         "description": "Невідомо"
     });
 
+    async function changeStatus(status) {
+        const response = await changeQuestStatus(id, status)
+        if(response){
+            await fetchQuest()
+            alert('Статус успішно змінено')
+            return
+        }
+        alert('Статус чомусь не змінився')
+        return
+    }
+
+    const questRegistrationStatus = () => {
+        let text = "Нерозпочата"
+        let status = "registration"
+        let buttonText = "Відкрити"
+        let buttonDisabled = false
+        if(questData.status==='registration'){
+            text = "Відкрита"
+            status = "draft"
+            buttonText = "Закрити"
+        }
+        else if(questData.status==='started'||questData.status==='finished'){
+            text = "Завершена"
+            status = "draft"
+            buttonText = "Неможливо здійснити дію"
+            buttonDisabled = true
+        }
+        return <>
+            <span className="h3 font-weight-bold mb-0">
+                {text}
+            </span>
+            <p className="mt-3 mb-0">
+                <Button
+                    color="primary"
+                    onClick={(e) => changeStatus(status)}
+                    disabled={buttonDisabled}
+                    size="sm"
+                >
+                    {buttonText}
+                </Button>
+            </p>
+        </>
+    }
+
+    const questStartStatus = () => {
+        let text = "Нерозпочатий"
+        let status = "started"
+        let buttonText = "Розпочати"
+        let buttonDisabled = false
+        if(questData.status==='started'){
+            text = "Розпочатий"
+            status = "finished"
+            buttonText = "Завершити"
+        }
+        else if(questData.status==='finished'){
+            text = "Завершений"
+            status = "draft"
+            buttonText = "Неможливо здійснити дію"
+            buttonDisabled = true
+        }
+        return <>
+            <span className="h3 font-weight-bold mb-0">
+                {text}
+            </span>
+            <p className="mt-3 mb-0">
+                <Button
+                    color="primary"
+                    onClick={(e) => changeStatus(status)}
+                    disabled={buttonDisabled}
+                    size="sm"
+                >
+                    {buttonText}
+                </Button>
+            </p>
+        </>
+    }
+
     useEffect(() => {
         fetchQuest();
     }, []);
@@ -40,7 +118,6 @@ const AdminControlQuest = () => {
         try {
             const data = await getQuest(id)
             setQuestData(data);
-            console.log(data)
         } catch (e) {
             console.log(e);
         }
@@ -67,18 +144,7 @@ const AdminControlQuest = () => {
                                         >
                                             Реєстрація
                                         </CardTitle>
-                                        <span className="h3 font-weight-bold mb-0">
-                                        Закрита
-                                      </span>
-                                        <p className="mt-3 mb-0">
-                                            <Button
-                                                color="primary"
-                                                onClick={(e) => e.preventDefault()}
-                                                size="sm"
-                                            >
-                                                Відкрити
-                                            </Button>
-                                        </p>
+                                        {questRegistrationStatus()}
                                     </div>
                                 </Row>
                             </CardBody>
@@ -95,18 +161,7 @@ const AdminControlQuest = () => {
                                         >
                                             Статус
                                         </CardTitle>
-                                        <span className="h3 font-weight-bold mb-0">
-                      Нерозпочата
-                    </span>
-                                        <p className="mt-3 mb-0">
-                                            <Button
-                                                color="primary"
-                                                onClick={(e) => e.preventDefault()}
-                                                size="sm"
-                                            >
-                                                Розпочати
-                                            </Button>
-                                        </p>
+                                        {questStartStatus()}
                                     </div>
                                 </Row>
                             </CardBody>
@@ -132,7 +187,7 @@ const AdminControlQuest = () => {
                                 </p>
                                 <p className="mt-0 mb-0 text-muted text-sm">
                       <span className="mr-2">
-                        Дата і час початку: {questData.start_datetime}
+                        Дата і час початку: {humanDateTime(questData.start_datetime)}
                       </span>
                                 </p>
                                 <p className="mt-0 mb-0 text-muted text-sm w-100 big-description">

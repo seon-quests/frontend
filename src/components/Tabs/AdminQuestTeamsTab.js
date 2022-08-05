@@ -18,6 +18,19 @@ const AdminQuestTeamsTab = (props) => {
     const { id } = useParams();
     const [questTeams, setQuestTeams] = useState({teams: []});
 
+    const acceptanceStatusText = (team) => {
+        const options = {
+            null: 'Очікує підтвердження',
+            true: 'Прийнято до участі',
+            false: 'Відхилено від участі'
+        }
+        return options[team.is_accepted]
+    }
+
+    const acceptanceButtonAvailable = (team) => {
+        return team.is_accepted === null;
+    }
+
     useEffect(async () => {
         await fetchQuestTeams();
     }, []);
@@ -30,6 +43,7 @@ const AdminQuestTeamsTab = (props) => {
 
     async function acceptTeam(teamId) {
         const response = await changeTeamAcceptanceStatus(id, teamId, true)
+        await fetchQuestTeams();
         if (response){
             alert('Команду підтверджено')
         }
@@ -37,6 +51,7 @@ const AdminQuestTeamsTab = (props) => {
 
     async function declineTeam(teamId) {
         const response = await changeTeamAcceptanceStatus(id, teamId, false)
+        await fetchQuestTeams();
         if (response){
             alert('Команду відхилено')
         }
@@ -79,14 +94,14 @@ const AdminQuestTeamsTab = (props) => {
 
                                     <td>
                                         <div className="d-flex align-items-center">
-                                            <span className="mr-2">Очікує підтвердження</span>
+                                            <span className="mr-2">{acceptanceStatusText(questTeam)}</span>
                                         </div>
                                     </td>
                                     <td className="text-right">
                                         <UncontrolledDropdown>
                                             <DropdownToggle
                                                 className="btn-icon-only text-light"
-                                                href="#pablo"
+                                                disabled={!acceptanceButtonAvailable(questTeam)}
                                                 role="button"
                                                 size="sm"
                                                 color=""

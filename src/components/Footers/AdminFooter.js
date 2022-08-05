@@ -29,7 +29,7 @@ const Footer = () => {
             © {new Date().getFullYear()}{" "}
             <a
               className="font-weight-bold ml-1"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
+              href="https://www.linkedin.com/in/orlan0045/"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -42,21 +42,11 @@ const Footer = () => {
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
             <NavItem>
               <NavLink
-                href="https://www.creative-tim.com?ref=adr-admin-footer"
+                href="http://zdolbunivcity.net/zeon/"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Головна
-              </NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink
-                href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Про нас
+                Про ЗЕОН
               </NavLink>
             </NavItem>
           </Nav>

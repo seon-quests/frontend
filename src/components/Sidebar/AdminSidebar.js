@@ -72,7 +72,7 @@ const AdminSidebar = (props) => {
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
       // ToDo: remove ! in the end
-      if (prop.visible==true){
+      if (prop.visible==true && prop.layout=='/admin'){
         return (
             <NavItem key={key}>
               <NavLink
@@ -139,7 +139,7 @@ const AdminSidebar = (props) => {
                   <img
                     alt="..."
                     src={
-                      require("../../assets/img/theme/team-1-800x800.jpg")
+                      require("../../assets/img/theme/person.jpeg")
                         .default
                     }
                   />
@@ -188,22 +188,6 @@ const AdminSidebar = (props) => {
               </Col>
             </Row>
           </div>
-          {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
-            <InputGroup className="input-group-rounded input-group-merge">
-              <Input
-                aria-label="Search"
-                className="form-control-rounded form-control-prepended"
-                placeholder="Search"
-                type="search"
-              />
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <span className="fa fa-search" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Form>
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
         </Collapse>

@@ -18,6 +18,7 @@ import {createTeam, getTeam, teamStartedQuest} from "../../services/teams";
 import QuestActionButton from "../../components/Buttons/QuestActionButton";
 import TeamRegisterToQuestModal from "../../components/Modals/TeamRegisterToQuestModal";
 import {useHistory} from "react-router-dom";
+import {humanDateTime} from "../../services/dateTimeConfig";
 
 const PlayerHome = () => {
   const [quests, setQuests] = useState([]);
@@ -207,7 +208,7 @@ const PlayerHome = () => {
                       </td>
                       <td>
                         <div className="d-flex align-items-center">
-                          <span className="mr-2">{quest.start_datetime}</span>
+                          <span className="mr-2">{humanDateTime(quest.start_datetime)}</span>
                         </div>
                       </td>
                       <td className="d-flex align-items-left">

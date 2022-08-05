@@ -55,7 +55,7 @@ const AdminQuestResultsTab = (props) => {
         originalResponse.teams_with_progresses.forEach((team)=>{
             const newTeamObject = {};
             newTeamObject['teamName'] = team.name;
-            newTeamObject['totalTime'] = calculateTotalTime(result.startDateTime, team.progresses.at(-1).answered_at);
+            newTeamObject['totalTime'] =  team.progresses.length > 0 ? calculateTotalTime(result.startDateTime, team.progresses.at(-1).answered_at) : "00:00:00";
             newTeamObject['progresses'] = team.progresses.map((progress)=>(moment.duration(progress.time_to_answer, "seconds").format("hh:mm:ss", {trim: false})))
             result.nodes.push(newTeamObject)
         })
@@ -86,24 +86,9 @@ const AdminQuestResultsTab = (props) => {
                                             <Cell key={index}>{progress}</Cell>
                                         ))
                                     }
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    <Cell>{item.teamName}</Cell>
-                                    {/*{[...Array(questResults.totalStages-item.progresses.length)].map((_, i) =>*/}
-                                    {/*    <Cell key={i}>-</Cell>*/}
-                                    {/*)}*/}
+                                    {[...Array(questResults.totalStages-item.progresses.length)].map((_, i) =>
+                                        <Cell key={i}>-</Cell>
+                                    )}
                                     <Cell pinRight>{item.totalTime}</Cell>
                                 </Row>
                             ))}

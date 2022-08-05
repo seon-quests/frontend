@@ -139,7 +139,7 @@ const Sidebar = (props) => {
                   <img
                     alt="..."
                     src={
-                      require("../../assets/img/theme/team-1-800x800.jpg")
+                      require("../../assets/img/theme/person.jpeg")
                         .default
                     }
                   />
