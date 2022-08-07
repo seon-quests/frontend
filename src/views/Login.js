@@ -39,6 +39,7 @@ const Login = () => {
         }
         history.push(getRedirectPath());
       } catch (e) {
+        alert('Неправильні логін або пароль')
         console.log(e)
       }
     }
@@ -97,7 +98,6 @@ const Login = () => {
           <Col xs="6">
             <a
               className="text-light"
-              href="#pablo"
               onClick={(e) => e.preventDefault()}
             >
               <small onClick={showSorryMessage}>Забули пароль?</small>
