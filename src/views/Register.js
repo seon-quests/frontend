@@ -9,7 +9,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Col,
+  Col, Row,
 } from "reactstrap";
 import {useFormik} from "formik";
 import {getRedirectPath, registerPlayer} from "../services/authServices";
@@ -145,6 +145,30 @@ const Register = () => {
                   />
                 </InputGroup>
               </FormGroup>
+              <Row className="my-4">
+                <Col xs="12">
+                  <div className="custom-control custom-control-alternative custom-checkbox">
+                    <input
+                        className="custom-control-input"
+                        id="customCheckRegister"
+                        type="checkbox"
+                        checked={true}
+                        disabled={true}
+                    />
+                    <label
+                        className="custom-control-label"
+                        htmlFor="customCheckRegister"
+                    >
+                      <span className="text-muted">
+                        Я прочитав(-ла) і погоджуюсь з {" "}
+                        <a href="/auth/rules" target="_blank">
+                          правилами використання цього сайту
+                        </a>
+                      </span>
+                    </label>
+                  </div>
+                </Col>
+              </Row>
               <div className="text-center">
                 <Button className="mt-4" color="primary" type="submit">
                   Створити акаунт

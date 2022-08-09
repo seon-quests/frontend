@@ -1,12 +1,6 @@
 // reactstrap components
 import {
     Card,
-    CardHeader,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    DropdownToggle,
-    Table,
     Container,
     Row,
     Col,
@@ -14,9 +8,8 @@ import {
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
-import {getQuestStages} from "../../services/questStages";
 import {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {changeQuestStatus, getQuest} from "../../services/quests";
 import classnames from "classnames";
 import AdminQuestStagesListTab from "../../components/Tabs/AdminQuestStagesListTab";

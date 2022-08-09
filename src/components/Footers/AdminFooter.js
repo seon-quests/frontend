@@ -49,6 +49,15 @@ const Footer = () => {
                 Про ЗЕОН
               </NavLink>
             </NavItem>
+            <NavItem>
+                <NavLink
+                    href="/auth/rules"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                  Правила та умови
+                </NavLink>
+            </NavItem>
           </Nav>
         </Col>
       </Row>

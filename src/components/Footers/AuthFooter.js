@@ -30,9 +30,10 @@ const Login = () => {
               <div className="copyright text-center text-xl-left text-muted">
                 © {new Date().getFullYear()}{" "}
                 <a
-                  className="font-weight-bold ml-1"
-                  href="https://www.creative-tim.com?ref=adr-auth-footer"
-                  target="_blank"
+                    className="font-weight-bold ml-1"
+                    href="https://www.linkedin.com/in/orlan0045/"
+                    rel="noopener noreferrer"
+                    target="_blank"
                 >
                   Andrii Orlov
                 </a>
@@ -42,10 +43,20 @@ const Login = () => {
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
-                    target="_blank"
+                      href="http://zdolbunivcity.net/zeon/"
+                      rel="noopener noreferrer"
+                      target="_blank"
                   >
-                    Про нас
+                    Про ЗЕОН
+                  </NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink
+                      href="/auth/rules"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                  >
+                    Правила та умови
                   </NavLink>
                 </NavItem>
               </Nav>
