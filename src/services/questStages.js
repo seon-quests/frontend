@@ -1,9 +1,17 @@
-import {authorizedRequest, unauthorizedRequest} from "./request";
+import {authorizedRequest} from "./request";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const createQuestStage = async (data, questId) => {
     try {
         return await authorizedRequest.post(`${apiUrl}/v1/quests/${questId}/quest-stages`, data);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+export const deleteQuestStage = async (questId, questStageId) => {
+    try {
+        return await authorizedRequest.delete(`${apiUrl}/v1/quests/${questId}/quest-stages/${questStageId}`);
     } catch (e) {
         console.log(e);
     }

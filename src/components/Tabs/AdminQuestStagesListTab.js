@@ -2,15 +2,12 @@ import {
     Button,
     Card,
     CardHeader,
-    Col, DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
+    Col,
     Row,
-    Table,
-    UncontrolledDropdown
+    Table
 } from "reactstrap";
 import {Link} from "react-router-dom";
-import {getQuestStages} from "../../services/questStages";
+import {deleteQuestStage, getQuestStages} from "../../services/questStages";
 import {useEffect, useState} from "react";
 
 const AdminQuestStagesListTab = (props) => {
@@ -27,6 +24,11 @@ const AdminQuestStagesListTab = (props) => {
         } catch (e) {
             console.log(e);
         }
+    }
+
+    async function removeQuestStage(questStageId) {
+        await deleteQuestStage(props.id, questStageId)
+        await fetchQuestStages();
     }
 
     return (
@@ -57,6 +59,7 @@ const AdminQuestStagesListTab = (props) => {
                                 <th scope="col">Почерговість</th>
                                 <th scope="col">Опис</th>
                                 <th scope="col">Відповідь</th>
+                                <th scope="col" />
                             </tr>
                             </thead>
                             <tbody>
@@ -77,6 +80,11 @@ const AdminQuestStagesListTab = (props) => {
                                         <div className="d-flex align-items-center">
                                             <span className="mr-2">{questStage.answer}</span>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <a className="table-action table-action-delete" onClick={()=>removeQuestStage(questStage.id)}>
+                                            <i className="fas fa-trash"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             ))}

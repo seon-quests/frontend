@@ -33,6 +33,11 @@ const AdminQuestResultsTab = (props) => {
         await fetchAndTransformQuestResults();
     }, []);
 
+    useEffect(() => {
+        const timer = setTimeout(() => fetchAndTransformQuestResults(), 15000);
+        return () => clearTimeout(timer);
+    }, [questResults]);
+
     async function fetchAndTransformQuestResults() {
         const resultsResponse = await getQuestResults(id);
         console.log(resultsResponse);

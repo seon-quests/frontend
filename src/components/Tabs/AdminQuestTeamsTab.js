@@ -1,8 +1,7 @@
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getQuestTeams} from "../../services/quests";
 import {
-    Button,
     Card,
     CardHeader,
     Col, DropdownItem,
@@ -28,12 +27,18 @@ const AdminQuestTeamsTab = (props) => {
     }
 
     const acceptanceButtonAvailable = (team) => {
-        return team.is_accepted === null;
+        return team.is_started === false;
     }
 
     useEffect(async () => {
         await fetchQuestTeams();
     }, []);
+
+
+    useEffect(() => {
+        const timer = setTimeout(() => fetchQuestTeams(), 15000);
+        return () => clearTimeout(timer);
+    }, [questTeams]);
 
     async function fetchQuestTeams() {
         const teamsResponse = await getQuestTeams(id);
