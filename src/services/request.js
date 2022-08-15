@@ -51,7 +51,7 @@ authorizedRequest.interceptors.response.use(
             return logout()
         }
         if (error.response && error.response.status >= 400 ) {
-            console.log(JSON.stringify(Object.values(error.response.data).flat()));
+            alert(JSON.stringify(Object.values(error.response.data).flat()));
             return Promise.reject(error);
         }
         console.log(error);

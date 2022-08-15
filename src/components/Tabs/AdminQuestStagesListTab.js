@@ -9,9 +9,12 @@ import {
 import {Link} from "react-router-dom";
 import {deleteQuestStage, getQuestStages} from "../../services/questStages";
 import {useEffect, useState} from "react";
+import ConfirmationDeletingQuestStageModal from "../Modals/ConfirmationDeletingQuestStageModal";
 
 const AdminQuestStagesListTab = (props) => {
     const [questStages, setQuestStages] = useState([]);
+    const [selectedQuestStageId, setSelectedQuestStageId] = useState(null);
+    const [confirmDeletingStageModalOpen, setConfirmDeletingStageModalOpen] = useState(null);
 
     useEffect(() => {
         fetchQuestStages();
@@ -26,13 +29,28 @@ const AdminQuestStagesListTab = (props) => {
         }
     }
 
-    async function removeQuestStage(questStageId) {
-        await deleteQuestStage(props.id, questStageId)
-        await fetchQuestStages();
+    const handeCallingDeletingModal = (questStageId) => {
+        setSelectedQuestStageId(questStageId);
+        setConfirmDeletingStageModalOpen(true);
     }
+
+    const handeConfirmingDeletingStageModal = async () => {
+        await deleteQuestStage(props.id, selectedQuestStageId)
+        await fetchQuestStages();
+        handleCloseConfirmDeletingStageModal()
+    }
+
+    const handleCloseConfirmDeletingStageModal = () => {
+        setConfirmDeletingStageModalOpen(false);
+    };
 
     return (
         <>
+            <ConfirmationDeletingQuestStageModal
+                isOpen={confirmDeletingStageModalOpen}
+                onClose={handleCloseConfirmDeletingStageModal}
+                onConfirm={handeConfirmingDeletingStageModal}
+            />
             <Row>
                 <div className="col">
                     <Card className="shadow">
@@ -82,7 +100,7 @@ const AdminQuestStagesListTab = (props) => {
                                         </div>
                                     </td>
                                     <td>
-                                        <a className="table-action table-action-delete" onClick={()=>removeQuestStage(questStage.id)}>
+                                        <a className="table-action table-action-delete" onClick={()=>handeCallingDeletingModal(questStage.id)}>
                                             <i className="fas fa-trash"></i>
                                         </a>
                                     </td>
