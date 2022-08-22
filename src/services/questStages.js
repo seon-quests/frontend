@@ -9,6 +9,12 @@ export const createQuestStage = async (data, questId) => {
     }
 }
 
+export const getQuestStage = async (questId, questStageId) =>
+    await authorizedRequest.get(`${apiUrl}/v1/quests/${questId}/quest-stages/${questStageId}`);
+
+export const editQuestStage = async (data, questId, questStageId) =>
+    await authorizedRequest.patch(`${apiUrl}/v1/quests/${questId}/quest-stages/${questStageId}`, data);
+
 export const deleteQuestStage = async (questId, questStageId) => {
     try {
         return await authorizedRequest.delete(`${apiUrl}/v1/quests/${questId}/quest-stages/${questStageId}`);

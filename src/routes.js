@@ -2,9 +2,9 @@ import Register from "views/Register.js";
 import Login from "views/Login.js";
 
 import AdminQuests from "./views/admin/AdminQuests";
-import AdminCreateQuest from "./views/admin/AdminCreateQuest";
+import AdminCreateUpdateQuest from "./views/admin/AdminCreateUpdateQuest";
 import AdminControlQuest from "./views/admin/AdminControlQuest";
-import AdminCreateQuestStage from "./views/admin/AdminCreateQuestStage";
+import AdminCreateUpdateQuestStage from "./views/admin/AdminCreateUpdateQuestStage";
 
 import PlayerHome from "./views/player/PlayerHome";
 import PlayerQuestStage from "./views/player/PlayerQuestStage";
@@ -41,7 +41,15 @@ var routes = [
     name: "Створити етап квесту",
     exact: true,
     icon: "ni ni-tv-2 text-primary",
-    component: AdminCreateQuestStage,
+    component: AdminCreateUpdateQuestStage,
+    layout: "/admin",
+  },
+  {
+    path: "/quests/:id/stages/:stage_id/edit",
+    name: "Редагування етапу квесту",
+    exact: true,
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminCreateUpdateQuestStage,
     layout: "/admin",
   },
   {
@@ -49,7 +57,7 @@ var routes = [
     name: "Створити квест",
     exact: true,
     icon: "ni ni-tv-2 text-primary",
-    component: AdminCreateQuest,
+    component: AdminCreateUpdateQuest,
     layout: "/admin",
   },
   {
@@ -58,6 +66,14 @@ var routes = [
     exact: true,
     icon: "ni ni-tv-2 text-primary",
     component: AdminControlQuest,
+    layout: "/admin",
+  },
+  {
+    path: "/quests/:id/edit",
+    name: "Редагувати квест",
+    exact: true,
+    icon: "ni ni-tv-2 text-primary",
+    component: AdminCreateUpdateQuest,
     layout: "/admin",
   },
   {

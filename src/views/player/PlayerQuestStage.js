@@ -34,6 +34,7 @@ const PlayerQuestStage = () => {
     const questIsFinished = () => {
         if(currentStage){
             return (
+                currentStage.total_stages === 0 || currentStage.quest.status === 'finished' ||
                 currentStage.latest_stage === currentStage.total_stages
                 && currentStage.total_stages!==0
                 && currentStage.quest.status === 'started'
@@ -80,6 +81,10 @@ const PlayerQuestStage = () => {
                         alert('Супер! Правильно!')
                         resetForm()
                         setCurrentStage(response)
+                    }
+                    else if(response.detail === "not active"){
+                        alert('Квест неактивний')
+                        window.location.reload();
                     }
                     else if(response.detail){
                         alert('Неправильна відповідь.')

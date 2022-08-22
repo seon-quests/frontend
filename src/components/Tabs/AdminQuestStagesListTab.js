@@ -100,6 +100,9 @@ const AdminQuestStagesListTab = (props) => {
                                         </div>
                                     </td>
                                     <td>
+                                        <a className="table-action table-action-delete mr-2" href={`/admin/quests/${props.id}/stages/${questStage.id}/edit`}>
+                                            <i className="fas fa-pen"></i>
+                                        </a>
                                         <a className="table-action table-action-delete" onClick={()=>handeCallingDeletingModal(questStage.id)}>
                                             <i className="fas fa-trash"></i>
                                         </a>

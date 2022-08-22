@@ -7,3 +7,6 @@
     overflow: visible;
     white-space: normal;
 }
+.is-invalid{
+    border: 1px solid #fb6340 !important;
+}

@@ -170,6 +170,9 @@ const AdminControlQuest = () => {
                                             className="text-uppercase text-muted mb-0 text-center"
                                         >
                                             Деталі
+                                            <a className="ml-1" href={`/admin/quests/${id}/edit`}>
+                                                <i className="fas fa-pen"></i>
+                                            </a>
                                         </CardTitle>
                                     </div>
                                 </Row>

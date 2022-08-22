@@ -4,39 +4,82 @@ import {
   CardHeader,
   Container,
   Row,
-  Col, Button, CardBody, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText
+  Col, Button, CardBody, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, FormFeedback
 } from "reactstrap";
 import ReactDatetime from "react-datetime";
 import 'moment/locale/uk';
 // core components
 import Header from "components/Headers/Header.js";
 import {useFormik} from "formik";
-import {useState} from "react";
-import {createQuest} from "../../services/quests";
+import {useEffect, useState} from "react";
+import {createQuest, editQuest, getQuest} from "../../services/quests";
+import {useParams} from "react-router-dom";
+import moment from "moment/moment";
+import {object, string} from "yup";
 
-const AdminCreateQuest = () => {
-  const [startDate, setStartDate] = useState(new Date());
+const AdminCreateUpdateQuest = () => {
+  const [initValues, setInitValues] = useState(
+      {
+        "name": "",
+        "description": "",
+        "start_datetime": moment().toDate(),
+      }
+  );
+  const { id } = useParams();
+  const isEditMode = id;
+  const validationSchema = object({
+    name: string().required("Поле обов`язкове"),
+    description: string().required("Поле обов`язкове"),
+  });
   const formik = useFormik(
       {
-        initialValues: {
-          "name": "",
-          "description": "",
-          "start_datetime": startDate,
-        },
-        onSubmit: async (values, {resetForm}) => {
-          try {
-            const response = await createQuest(values);
-            if (response.name) {
-              alert('Квест '+response.name+' успішно створено!')
-            }
-            resetForm();
-          } catch (error) {
-            alert('Сталась помилка')
-            console.log(error)
-          }
-        }
+        initialValues: initValues,
+        validationSchema: validationSchema,
+        enableReinitialize: true,
+        onSubmit: onSubmit
       }
   )
+
+  async function onSubmit(values, {resetForm}) {
+    if (isEditMode) {
+      try {
+        const response = await editQuest(values, id);
+        if (response.id) {
+          alert('Квест успішно оновлено!')
+        }
+      } catch (error) {
+        alert('Сталась помилка')
+      }
+    }
+    else {
+      try {
+        const response = await createQuest(values);
+        if (response.name) {
+          alert('Квест '+response.name+' успішно створено!')
+        }
+        resetForm();
+      } catch (error) {
+        alert('Сталась помилка')
+        console.log(error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(isEditMode){
+      async function fetchQuest() {
+        try {
+          const data = await getQuest(id)
+          data['start_datetime'] = moment(data['start_datetime']).format("DD.MM.yyyy HH:mm")
+          setInitValues(data);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      fetchQuest();
+    }
+  }, [])
+
   return (
     <>
       <Header />
@@ -49,7 +92,9 @@ const AdminCreateQuest = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="12">
-                    <h3 className="mb-0">Створення квесту</h3>
+                    <h3 className="mb-0">
+                      {isEditMode ? `Редагування квесту № ${id}` : `Створення квесту` }
+                    </h3>
                   </Col>
                 </Row>
               </CardHeader>
@@ -69,7 +114,7 @@ const AdminCreateQuest = () => {
                             Назва квесту
                           </label>
                           <Input
-                              className="form-control-alternative"
+                              className={`form-control-alternative ${formik.errors.name ? 'is-invalid': ''}`}
                               id="input-username"
                               placeholder="Мокрий квест"
                               type="text"
@@ -77,6 +122,7 @@ const AdminCreateQuest = () => {
                               value={formik.values.name}
                               onChange={formik.handleChange}
                           />
+                          <FormFeedback>{formik.errors.name}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -96,10 +142,11 @@ const AdminCreateQuest = () => {
                             <ReactDatetime
                                 id="dateFrom"
                                 name="start_datetime"
-                                type="text"
+                                type="date"
                                 value={formik.values.start_datetime}
-                                onChange={(date) => formik.setFieldValue('start_datetime', date)}
-                                timeFormat={true}
+                                onChange={(date) => formik.setFieldValue('start_datetime', moment(date).toDate())}
+                                dateFormat="DD.MM.yyyy"
+                                timeFormat="HH:mm"
                                 locale="uk"
                             />
                           </InputGroup>
@@ -114,7 +161,7 @@ const AdminCreateQuest = () => {
                     <FormGroup>
                       <label>Опис</label>
                       <Input
-                          className="form-control-alternative"
+                          className={`form-control-alternative ${formik.errors.description ? 'is-invalid': ''}`}
                           placeholder="Декілька слів про цей супер квест..."
                           rows="4"
                           type="textarea"
@@ -122,11 +169,12 @@ const AdminCreateQuest = () => {
                           value={formik.values.description}
                           onChange={formik.handleChange}
                       />
+                      <FormFeedback>{formik.errors.description}</FormFeedback>
                     </FormGroup>
                   </div>
                   <Row>
                     <Button color="primary" outline type="submit">
-                      Створити квест
+                      {isEditMode ? "Редагувати квест" : "Створити квест" }
                     </Button>
                   </Row>
                 </Form>
@@ -139,4 +187,4 @@ const AdminCreateQuest = () => {
   );
 };
 
-export default AdminCreateQuest;
+export default AdminCreateUpdateQuest;

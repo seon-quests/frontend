@@ -4,38 +4,81 @@ import {
   CardHeader,
   Container,
   Row,
-  Col, Button, CardBody, Form, FormGroup, Input
+  Col, Button, CardBody, Form, FormGroup, Input, FormFeedback
 } from "reactstrap";
 import 'moment/locale/uk';
 // core components
 import Header from "components/Headers/Header.js";
 import {useFormik} from "formik";
 import {useParams} from "react-router-dom";
-import {createQuestStage} from "../../services/questStages";
+import {createQuestStage, editQuestStage, getQuestStage} from "../../services/questStages";
+import {useEffect, useState} from "react";
+import { object, string, number } from 'yup';
 
-const AdminCreateQuestStage = () => {
+const AdminCreateUpdateQuestStage = () => {
+  const [initValues, setInitValues] = useState(
+      {
+        "answer": "",
+        "description": "",
+        "order_number": 1,
+      }
+  );
   const { id } = useParams();
+  const { stage_id } = useParams();
+  const isEditMode = stage_id;
+  const validationSchema = object({
+    answer: string().required("Поле обов`язкове"),
+    description: string().required("Поле обов`язкове"),
+    order_number: number().required("Поле обов`язкове").positive("Більше 0").integer("Ціле число, бляха")
+  });
   const formik = useFormik(
       {
-        initialValues: {
-          "answer": "",
-          "description": "",
-          "order_number": 1,
-        },
-        onSubmit: async (values, {resetForm}) => {
-          try {
-            const response = await createQuestStage(values, id);
-            if (response.id) {
-              alert('Eтап успішно створено!')
-            }
-            resetForm();
-          } catch (error) {
-            alert('Сталась помилка')
-            console.log(error)
-          }
-        }
+        initialValues: initValues,
+        validationSchema: validationSchema,
+        enableReinitialize: true,
+        onSubmit: onSubmit
       }
   )
+
+  async function onSubmit(values, {resetForm}) {
+    if (isEditMode) {
+      try {
+        const response = await editQuestStage(values, id, stage_id);
+        if (response.id) {
+          alert('Eтап успішно оновлено!')
+        }
+      } catch (error) {
+        alert('Сталась помилка')
+      }
+    }
+    else {
+      try {
+        const response = await createQuestStage(values, id);
+        if (response.id) {
+          alert('Eтап успішно створено!')
+        }
+        resetForm();
+      } catch (error) {
+        alert('Сталась помилка')
+        console.log(error)
+      }
+    }
+  }
+
+  useEffect( () => {
+    if(isEditMode){
+      async function fetchQuestStageValues() {
+        try {
+          const data = await getQuestStage(id, stage_id);
+          setInitValues(data);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      fetchQuestStageValues();
+    }
+  }, []);
+
   return (
     <>
       <Header />
@@ -48,7 +91,9 @@ const AdminCreateQuestStage = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="12">
-                    <h3 className="mb-0">Створення етапу квесту № {id}</h3>
+                    <h3 className="mb-0">
+                      {isEditMode ? `Редагування етапу квесту № ${id}` : `Створення етапу квесту № ${id}` }
+                    </h3>
                   </Col>
                 </Row>
               </CardHeader>
@@ -65,7 +110,7 @@ const AdminCreateQuestStage = () => {
                             Відповідь
                           </label>
                           <Input
-                              className="form-control-alternative"
+                              className={`form-control-alternative ${formik.errors.answer ? 'is-invalid': ''}`}
                               id="input-answer"
                               placeholder="Шевченка"
                               type="text"
@@ -73,6 +118,7 @@ const AdminCreateQuestStage = () => {
                               value={formik.values.answer}
                               onChange={formik.handleChange}
                           />
+                          <FormFeedback>{formik.errors.answer}</FormFeedback>
                         </FormGroup>
                       </Col>
                       <Col lg="6">
@@ -84,7 +130,7 @@ const AdminCreateQuestStage = () => {
                             Порядковий номер етапу
                           </label>
                           <Input
-                              className="form-control-alternative"
+                              className={`form-control-alternative ${formik.errors.order_number ? 'is-invalid': ''}`}
                               id="input-order-number"
                               min={1}
                               placeholder="1"
@@ -93,6 +139,7 @@ const AdminCreateQuestStage = () => {
                               value={formik.values.order_number}
                               onChange={formik.handleChange}
                           />
+                          <FormFeedback>{formik.errors.order_number}</FormFeedback>
                         </FormGroup>
                       </Col>
                     </Row>
@@ -101,7 +148,7 @@ const AdminCreateQuestStage = () => {
                     <FormGroup>
                       <label>Питання етапу</label>
                       <Input
-                          className="form-control-alternative"
+                          className={`form-control-alternative ${formik.errors.description ? 'is-invalid': ''}`}
                           placeholder="Найкраща вулиця Здолбунова?"
                           rows="4"
                           type="textarea"
@@ -109,11 +156,12 @@ const AdminCreateQuestStage = () => {
                           value={formik.values.description}
                           onChange={formik.handleChange}
                       />
+                      <FormFeedback>{formik.errors.description}</FormFeedback>
                     </FormGroup>
                   </div>
                   <Row>
                     <Button color="primary" outline type="submit">
-                      Створити етап
+                      {isEditMode ? "Редагувати етап" : "Створити етап" }
                     </Button>
                   </Row>
                 </Form>
@@ -126,4 +174,4 @@ const AdminCreateQuestStage = () => {
   );
 };
 
-export default AdminCreateQuestStage;
+export default AdminCreateUpdateQuestStage;

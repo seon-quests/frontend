@@ -1,8 +1,11 @@
-import {authorizedRequest, unauthorizedRequest} from "./request";
+import {authorizedRequest} from "./request";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 export const getQuest = async (questId) =>
     await authorizedRequest.get(`${apiUrl}/v1/quests/${questId}`);
+
+export const editQuest = async (data, questId) =>
+    await authorizedRequest.patch(`${apiUrl}/v1/quests/${questId}/`, data);
 
 export const getQuests = async () => {
     try {
