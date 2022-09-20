@@ -23,7 +23,8 @@ const AdminControlQuest = () => {
     const [questData, setQuestData] = useState({
         "name": "Невідомо",
         "start_datetime": "Невідомо",
-        "description": "Невідомо"
+        "description": "Невідомо",
+        "has_plug_stage": false
     });
 
     async function changeStatus(status) {
@@ -254,7 +255,7 @@ const AdminControlQuest = () => {
                         <AdminQuestTeamsTab id={id} />
                     </TabPane>
                     <TabPane tabId="tabs3">
-                        <AdminQuestResultsTab id={id} />
+                        <AdminQuestResultsTab id={id} hasPlugStage={questData.has_plug_stage} />
                     </TabPane>
                 </TabContent>
             </Container>

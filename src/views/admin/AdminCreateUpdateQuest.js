@@ -23,6 +23,7 @@ const AdminCreateUpdateQuest = () => {
         "name": "",
         "description": "",
         "start_datetime": moment().toDate(),
+        "has_plug_stage": false
       }
   );
   const { id } = useParams();
@@ -70,7 +71,7 @@ const AdminCreateUpdateQuest = () => {
       async function fetchQuest() {
         try {
           const data = await getQuest(id)
-          data['start_datetime'] = moment(data['start_datetime']).format("DD.MM.yyyy HH:mm")
+          data['start_datetime'] = moment(data['start_datetime']).toDate()
           setInitValues(data);
         } catch (e) {
           console.log(e);
@@ -151,6 +152,23 @@ const AdminCreateUpdateQuest = () => {
                             />
                           </InputGroup>
                         </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg="12">
+                        <div className="custom-control custom-checkbox">
+                          <input
+                              className="custom-control-input"
+                              id="hasPlugStageCheckbox"
+                              type="checkbox"
+                              name="has_plug_stage"
+                              checked={formik.values.has_plug_stage}
+                              onChange={formik.handleChange}
+                          />
+                          <label className="custom-control-label" htmlFor="hasPlugStageCheckbox">
+                            Рахувати час з другого раунду
+                          </label>
+                        </div>
                       </Col>
                     </Row>
                   </div>

@@ -11,6 +11,7 @@ momentDurationFormatSetup(moment);
 const AdminQuestResultsTab = (props) => {
     const { id } = useParams();
     const [questResults, setQuestResults] = useState({nodes: []});
+    const hasPlugStage = props.hasPlugStage;
 
     const theme = useTheme({
         Table: `
@@ -31,7 +32,7 @@ const AdminQuestResultsTab = (props) => {
 
     useEffect(async () => {
         await fetchAndTransformQuestResults();
-    }, []);
+    }, [hasPlugStage]);
 
     useEffect(() => {
         const timer = setTimeout(() => fetchAndTransformQuestResults(), 15000);
@@ -40,13 +41,12 @@ const AdminQuestResultsTab = (props) => {
 
     async function fetchAndTransformQuestResults() {
         const resultsResponse = await getQuestResults(id);
-        console.log(resultsResponse);
         setQuestResults(transformResultsData(resultsResponse));
     }
 
-    function calculateTotalTime(startDateTime, latestAnsweredAt){
-        const date = new Date(startDateTime);
-        const last_answered_date = new Date(latestAnsweredAt)
+    function calculateTotalTime(startDateTime, firstStageAnsweredAt, latestAnsweredAt){
+        const date = hasPlugStage === true ? new Date(firstStageAnsweredAt) : new Date(startDateTime);
+        const last_answered_date = new Date(latestAnsweredAt);
         return moment.duration(last_answered_date.getTime() - date.getTime(), "milliseconds").format("hh:mm:ss", {trim: false})
     }
 
@@ -60,7 +60,9 @@ const AdminQuestResultsTab = (props) => {
         originalResponse.teams_with_progresses.forEach((team)=>{
             const newTeamObject = {};
             newTeamObject['teamName'] = team.name;
-            newTeamObject['totalTime'] =  team.progresses.length > 0 ? calculateTotalTime(result.startDateTime, team.progresses.at(-1).answered_at) : "00:00:00";
+            newTeamObject['totalTime'] =  team.progresses.length > 0 ? calculateTotalTime(
+                result.startDateTime, team.progresses.at(0).answered_at, team.progresses.at(-1).answered_at
+            ) : "00:00:00";
             newTeamObject['progresses'] = team.progresses.map((progress)=>(moment.duration(progress.time_to_answer, "seconds").format("hh:mm:ss", {trim: false})))
             result.nodes.push(newTeamObject)
         })
