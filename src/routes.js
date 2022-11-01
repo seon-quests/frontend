@@ -12,14 +12,6 @@ import Rules from "./views/Rules";
 
 
 var routes = [
-  // {
-  //   path: "/index",
-  //   name: "Dashboard",
-  //   icon: "ni ni-tv-2 text-primary",
-  //   component: Index,
-  //   visible: true,
-  //   layout: "/admin",
-  // },
   {
     path: "/index",
     name: "Головна сторінка",
