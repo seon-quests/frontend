@@ -3,7 +3,7 @@
 ## Features
 
 - **React 16** with Redux, and react-router
-- Perttier/Eslint
+- Prettier/Eslint
 
 
 ### Frontend Development
