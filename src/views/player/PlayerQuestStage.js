@@ -74,9 +74,8 @@ const PlayerQuestStage = () => {
             initialValues: {
                 "answer": "",
             },
-            onSubmit: async (values, {resetForm, setSubmitting}) => {
+            onSubmit: async (values, {resetForm}) => {
                 try {
-                    setSubmitting(true)
                     const response = await answerQuestStage(values, id, currentStage.current_stage.id);
                     if (response.quest) {
                         alert('Супер! Правильно!')
@@ -92,9 +91,6 @@ const PlayerQuestStage = () => {
                     }
                 } catch (error) {
                     console.log(error)
-                }
-                finally {
-                    setSubmitting(false)
                 }
             }
         }
@@ -187,7 +183,7 @@ const PlayerQuestStage = () => {
                                                             onChange={answerQuestStageForm.handleChange}
                                                         />
                                                     </FormGroup>
-                                                    <Button color="primary" outline type="submit" disabled={questIsFinished()}>
+                                                    <Button color="primary" outline type="submit" disabled={questIsFinished() || answerQuestStageForm.isSubmitting}>
                                                         Відповісти
                                                     </Button>
                                                     {
