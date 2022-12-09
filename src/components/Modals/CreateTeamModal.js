@@ -1,13 +1,18 @@
 import React from 'react';
-import {Button, FormGroup, Input, Modal, Form} from "reactstrap";
+import {Button, FormGroup, Input, Modal, Form, FormFeedback} from "reactstrap";
 import {useFormik} from "formik";
+import {object, string} from "yup";
 
 const CreateTeamModal = ({isOpen, onClose, onConfirm}) => {
+    const validationSchema = object({
+        name: string().required("Поле обов`язкове")
+    });
     const createTeamForm = useFormik(
         {
             initialValues: {
                 "name": "",
             },
+            validationSchema: validationSchema,
             onSubmit: (values) => {
                 onConfirm(values);
             }
@@ -36,7 +41,7 @@ const CreateTeamModal = ({isOpen, onClose, onConfirm}) => {
                 <div className="px-4">
                     <FormGroup>
                         <Input
-                            className="form-control-alternative"
+                            className={`form-control-alternative ${createTeamForm.errors.name ? 'is-invalid': ''}`}
                             placeholder="Моя супер команда"
                             rows="4"
                             type="input"
@@ -44,6 +49,7 @@ const CreateTeamModal = ({isOpen, onClose, onConfirm}) => {
                             value={createTeamForm.values.name}
                             onChange={createTeamForm.handleChange}
                         />
+                        <FormFeedback>{createTeamForm.errors.name}</FormFeedback>
                     </FormGroup>
                 </div>
                 <div className="modal-footer">

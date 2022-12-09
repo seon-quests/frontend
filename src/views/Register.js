@@ -9,14 +9,22 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Col, Row,
+  Col, Row, FormFeedback
 } from "reactstrap";
 import {useFormik} from "formik";
 import {getRedirectPath, registerPlayer} from "../services/authServices";
 import {useHistory} from "react-router-dom";
+import {object, string} from "yup";
 
 const Register = () => {
   const history = useHistory();
+  const validationSchema = object({
+    first_name: string().required("Поле обов`язкове"),
+    last_name: string().required("Поле обов`язкове"),
+    email: string().required("Поле обов`язкове"),
+    phone_number: string().required("Поле обов`язкове"),
+    password: string().required("Поле обов`язкове"),
+  });
   const formik = useFormik(
       {
         initialValues: {
@@ -28,6 +36,7 @@ const Register = () => {
           "instagram": "",
           "type": "player"
         },
+        validationSchema: validationSchema,
         onSubmit: async (values, {resetForm}) => {
           try {
             const response = await registerPlayer(values);
@@ -57,68 +66,76 @@ const Register = () => {
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-hat-3" />
+                      <i className="ni ni-email-83" />
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                      invalid={`${formik.errors.email ? 'is-invalid': ''}`}
                       placeholder="Email"
                       type="email"
                       name="email"
                       value={formik.values.email}
                       onChange={formik.handleChange}
                   />
+                  <FormFeedback>{formik.errors.email}</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-email-83" />
+                      <i className="ni ni-single-02" />
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                      invalid={`${formik.errors.first_name ? 'is-invalid': ''}`}
                       placeholder="Ім'я"
                       name="first_name"
                       value={formik.values.first_name}
                       onChange={formik.handleChange}
                   />
+                  <FormFeedback>{formik.errors.first_name}</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-email-83" />
+                      <i className="ni ni-single-02" />
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                      invalid={`${formik.errors.last_name ? 'is-invalid': ''}`}
                       placeholder="Прізвище"
                       name="last_name"
                       value={formik.values.last_name}
                       onChange={formik.handleChange}
                   />
+                  <FormFeedback>{formik.errors.last_name}</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-email-83" />
+                      <i className="fa fa-phone" />
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                      invalid={`${formik.errors.phone_number ? 'is-invalid': ''}`}
                       placeholder="Телефон"
                       name="phone_number"
                       value={formik.values.phone_number}
                       onChange={formik.handleChange}
                   />
+                  <FormFeedback>{formik.errors.phone_number}</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
-                      <i className="ni ni-email-83" />
+                      <i className="ni ni-app" />
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
@@ -137,12 +154,14 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    invalid={`${formik.errors.password ? 'is-invalid': ''}`}
                     placeholder="Пароль"
                     type="password"
                     name="password"
                     value={formik.values.password}
                     onChange={formik.handleChange}
                   />
+                  <FormFeedback>{formik.errors.password}</FormFeedback>
                 </InputGroup>
               </FormGroup>
               <Row className="my-4">
