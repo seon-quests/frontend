@@ -15,10 +15,15 @@ const AdminQuestStagesListTab = (props) => {
     const [questStages, setQuestStages] = useState([]);
     const [selectedQuestStageId, setSelectedQuestStageId] = useState(null);
     const [confirmDeletingStageModalOpen, setConfirmDeletingStageModalOpen] = useState(null);
+    const [lastOrderNumber, setLastOrderNumber] = useState(0);
 
     useEffect(() => {
         fetchQuestStages();
     }, []);
+
+    useEffect(() => {
+        getLastOrderNumber();
+    }, [questStages]);
 
     async function fetchQuestStages() {
         try {
@@ -44,6 +49,12 @@ const AdminQuestStagesListTab = (props) => {
         setConfirmDeletingStageModalOpen(false);
     };
 
+    const getLastOrderNumber = () => {
+        if(questStages.length>0){
+            setLastOrderNumber(questStages.length)
+        }
+    }
+
     return (
         <>
             <ConfirmationDeletingQuestStageModal
@@ -60,7 +71,7 @@ const AdminQuestStagesListTab = (props) => {
                                     <h3 className="mb-0">Етапи квесту</h3>
                                 </Col>
                                 <Col className="text-right" xs="4">
-                                    <Link to={`/admin/quests/${props.id}/stages/create`}>
+                                    <Link to={`/admin/quests/${props.id}/stages/create/?last_order_number=${lastOrderNumber}`}>
                                         <Button
                                             color="primary"
                                             size="sm"

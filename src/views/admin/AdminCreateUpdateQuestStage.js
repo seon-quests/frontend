@@ -14,6 +14,7 @@ import {useParams} from "react-router-dom";
 import {createQuestStage, editQuestStage, getQuestStage} from "../../services/questStages";
 import {useEffect, useState} from "react";
 import { object, string, number } from 'yup';
+import queryString from "query-string";
 
 const AdminCreateUpdateQuestStage = () => {
   const [initValues, setInitValues] = useState(
@@ -25,6 +26,8 @@ const AdminCreateUpdateQuestStage = () => {
   );
   const { id } = useParams();
   const { stage_id } = useParams();
+  const queryParams = queryString.parse(window.location.search)
+
   const isEditMode = stage_id;
   const validationSchema = object({
     answer: string().required("Поле обов`язкове"),
@@ -39,6 +42,10 @@ const AdminCreateUpdateQuestStage = () => {
         onSubmit: onSubmit
       }
   )
+
+  const changeInitialOrderNumber = (last_order_number) => {
+    setInitValues({...initValues, order_number: parseInt(last_order_number)+1});
+  }
 
   async function onSubmit(values, {resetForm}) {
     if (isEditMode) {
@@ -58,6 +65,7 @@ const AdminCreateUpdateQuestStage = () => {
           alert('Eтап успішно створено!')
         }
         resetForm();
+        changeInitialOrderNumber(values['order_number'])
       } catch (error) {
         alert('Сталась помилка')
         console.log(error)
@@ -76,6 +84,10 @@ const AdminCreateUpdateQuestStage = () => {
         }
       }
       fetchQuestStageValues();
+    }
+    else {
+      const last_order_number = queryParams['last_order_number']
+      changeInitialOrderNumber(last_order_number)
     }
   }, []);
 
