@@ -79,6 +79,7 @@ const AdminQuestTeamsTab = (props) => {
                             <tr>
                                 <th scope="col">Назва команди</th>
                                 <th scope="col">Капітан</th>
+                                <th scope="col">Номер телефону капітана</th>
                                 <th scope="col">Статус</th>
                                 <th scope="col"/>
                             </tr>
@@ -96,6 +97,12 @@ const AdminQuestTeamsTab = (props) => {
                                                   {questTeam.team.captain.first_name} {questTeam.team.captain.last_name}
                                                 </span>
                                     </th>
+
+                                    <td scope="row">
+                                        <div className="d-flex align-items-center">
+                                            {questTeam.team.captain.phone_number && questTeam.team.captain.phone_number.length > 0 ? questTeam.team.captain.phone_number : '-' }
+                                        </div>
+                                    </td>
 
                                     <td>
                                         <div className="d-flex align-items-center">
